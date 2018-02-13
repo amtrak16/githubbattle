@@ -13,8 +13,6 @@ class Battle extends Component {
         player1Msg: '',
         player1Err: false,
         player1SbmBtn: true,
-        player1Success: false,
-        player1RspMsg: '',
         player1Score: '',
         player1ScoreMsg: '',
         player1ScoreMsgStyle: '',
@@ -23,8 +21,6 @@ class Battle extends Component {
         player2Msg: '',
         player2Err: false,
         player2SbmBtn: true,
-        player2Success: false,
-        player2RspMsg: '',
         player2Score: '',
         player2ScoreMsg: '',
         player2ScoreMsgStyle: ''
@@ -42,7 +38,7 @@ class Battle extends Component {
 
   onPlayer1In({ target }) {
     if (target.value.length === 0) {
-      this.setState({ player1Val: target.value, player1Err: true, player1Msg: 'Please enter the Player 1 user name to search on.', player1Success: false, player1RspMsg: '', player1SbmBtn: true })
+      this.setState({ player1Val: target.value, player1Err: true, player1Msg: 'Please enter the Player 1 user name to search on.', player1SbmBtn: true })
     } else {
       this.setState({ player1Val: target.value, player1Err: false, player1Msg: '', githubSuccess: false, player1SbmBtn: false })
     }
@@ -50,7 +46,7 @@ class Battle extends Component {
 
   onPlayer2In({ target }) {
     if (target.value.length === 0) {
-      this.setState({ player2Val: target.value, player2Err: true, player2Msg: 'Please enter the Player 2 user name to search on.', player2Success: false, player2RspMsg: '', player2SbmBtn: true })
+      this.setState({ player2Val: target.value, player2Err: true, player2Msg: 'Please enter the Player 2 user name to search on.', player2SbmBtn: true })
     } else {
       this.setState({ player2Val: target.value, player2Err: false, player2Msg: '', githubSuccess: false, player2SbmBtn: false })
     }
@@ -58,14 +54,24 @@ class Battle extends Component {
 
   onPlayer1Click(evt) {
     evt.preventDefault();
-    this.props.getGitHubUser(this.state.player1Val)
-    if (this.props.player1Success) {this.setState({player1Val: ''})}
+    this.props.getGitHubUser({ id: evt.target.id, userName: this.state.player1Val })
+    if (this.props.player1Success) {
+      this.setState({ player1Val: '', player1SbmBtn: true })
+    } else {
+      console.log(this.props.player1Success)
+      this.setState({ player1Val: this.state.player1Val, player1Err: true, player1Msg: 'GitHub username does not exist, try again.', player1SbmBtn: true })
+    }
   }
 
   onPlayer2Click(evt) {
     evt.preventDefault();
-    this.props.getGitHubUser(this.state.player2Val)
-    if (this.props.player2Success) { this.setState({ player2Val: '' }) }
+    this.props.getGitHubUser({ id: evt.target.id, userName: this.state.player2Val })
+    if (this.props.player2Success) {
+      this.setState({ player2Val: '', player2SbmBtn: true })
+    } else {
+      console.log(this.props.player2Success)
+      this.setState({ player2Val: this.state.player2Val, player2Err: true, player2Msg: 'GitHub username does not exist, try again.', player2SbmBtn: true })
+    }
   }
 
   render() {
@@ -74,44 +80,56 @@ class Battle extends Component {
         <header className="App-header">
           <h1 className="App-title">{this.props.title}</h1>
         </header>
-        <div className="small-6 columns">
-          <div className="card">
-            <form className="card">
-              <div className="row">
-                <div className="small-1 columns">&nbsp;</div>
-                <h1 className="small-3 columns">Player 1</h1>
-                <div className="small-2 columns">&nbsp;</div>
-                <h1 className="small-3 columns">Player 2</h1>
-                <div className="small-1 columns">&nbsp;</div>
-              </div>
-              <div className="row">
-                <div className="small-5 columns md-text-field with-floating-label icon-left">
-                  <input type="search" id="player1_in" placeholder='github_username' value={this.state.player1Val} onChange={this.onPlayer1In} />
-                  <label for="player1_in">Github Username:</label>
-                  <span className="error">{this.state.player1Msg}</span>
-                  <span className="icon icon-sysicon-search"></span>
+        <form>
+          <div className="row">
+            <div className="small-5 columns">
+              <div className="card">
+                <div className="row">
+                  <h1 className="small-4 columns">Player 1</h1>
+                  {/* <div className="small-1 columns">&nbsp;</div> */}
                 </div>
-                <div className="small-1 columns">&nbsp;</div>
-                <div className="small-5 columns md-text-field with-floating-label icon-left">
-                  <input type="search" id="player2_in" placeholder='github_username' value={this.state.player2Val} onChange={this.onPlayer2In} />
-                  <label for="player2_in">Github Username:</label>
-                  <span className="error">{this.state.player2Msg}</span>
-                  <span className="icon icon-sysicon-search"></span>
+                <div className="row">
+                  <div className="small-4 columns md-text-field with-floating-label icon-left">
+                    <input type="search" id="player1_in" placeholder='github_username' value={this.state.player1Val} onChange={this.onPlayer1In} />
+                    <label for="player1_in">Github Username:</label>
+                    <span className="error">{this.state.player1Msg}</span>
+                    <span className="icon icon-sysicon-search"></span>
+                  </div>
                 </div>
-                <div className="small-1 columns">&nbsp;</div>
-              </div>
-              <div className="row">
-                <div className="small-3 columns">
-                  <button className="button btn-cta" disabled={this.state.player1SbmBtn} onClick={this.onPlayer1Click}>Get User</button>
-                </div>
-                <div className="small-3 columns">
-                  <button className="button btn-cta" disabled={this.state.player2SbmBtn} onClick={this.onPlayer2Click}>Get User</button>
+                <div className="row">
+                  <div className="small-4 columns">
+                    <button type="search" className="button btn-cta" id="1" disabled={this.state.player1SbmBtn} onClick={this.onPlayer1Click}>Get User</button>
+                  </div>
+                  {/* <div className="small-1 columns">&nbsp;</div> */}
                 </div>
               </div>
-            </form>
+            </div>
+            <div className="small-5 columns">
+              <div className="card">
+                <div className="row">
+                  <h1 className="small-4 columns">Player 2</h1>
+                  {/* <div className="small-3 columns">&nbsp;</div> */}
+                </div>
+                <div className="row">
+                  <div className="small-4 columns md-text-field with-floating-label icon-left">
+                    <input type="search" id="player2_in" placeholder='github_username' value={this.state.player2Val} onChange={this.onPlayer2In} />
+                    <label for="player2_in">Github Username:</label>
+                    <span className="error">{this.state.player2Msg}</span>
+                    <span className="icon icon-sysicon-search"></span>
+                  </div>
+                  {/* <div className="small-1 columns">&nbsp;</div> */}
+                </div>
+                <div className="row">
+                  <div className="small-4 columns">
+                    <button type="search" className="button btn-cta" id="2" disabled={this.state.player2SbmBtn} onClick={this.onPlayer2Click}>Get User</button>
+                  </div>
+                  {/* <div className="small-2 columns">&nbsp;</div> */}
+                </div>
+              </div>
+            </div>
+            <div className="small-2 columns"></div>
           </div>
-        </div>
-        <div className="small-6 columns"></div>
+        </form>
       </div>
     )
   }
@@ -126,8 +144,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getGitHubUser: function (userName) {
-      dispatch(getGitHubUser(userName))
+    getGitHubUser: function (payload) {
+      dispatch(getGitHubUser(payload))
     },
   }
 }

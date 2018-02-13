@@ -2,23 +2,29 @@ import axios from 'axios';
 /*
  * action types
  */
-// export const GETGITHUBUSER = 'GETGITHUBUSER';
+export const UPDPLAYERSTATUS = 'UPDPLAYERSTATUS';
 
 /*
  * action creators
  */
-  // return { type: GETGITHUBUSER, payload: payload }
 
-export function getGitHubUser(userName) {
+export function getGitHubUser(payload) {
 
   return (dispatch, getState, url) => {
-    let apiVal = `${url}${userName}`
+    let apiVal = `${url}${payload.userName}`
     axios.get(apiVal)
       .then((response) => {
         console.log(response.data);
-        // const newCity = new curCity(response.data.name, response.data.main.humidity, response.data.main.temp, response.data.main.temp_max, response.data.main.temp_min, response.data.weather)
-        // dispatch(updateCurrentCity(newCity))
+        dispatch(updPlayerStatus({ id: payload.id, playerSuccess: true, publicRepos: response.data.public_repos, followers: response.data.followers, avatarUrl: response.data.avatar_url}))
+      })
+      .catch((error) => {
+        console.log(error);
+        dispatch(updPlayerStatus({ id: payload.id, playerSuccess: false, publicRepos: 0, followers: 0, avatarUrl: '' }))
       })
   }
 }
 
+export function updPlayerStatus(payload) {
+  console.log(payload)
+  return { type: UPDPLAYERSTATUS, payload: payload }
+}
