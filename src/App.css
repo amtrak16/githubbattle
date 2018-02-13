@@ -1,28 +1,35 @@
-.App {
+/* .App {
   text-align: center;
-}
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
-}
-
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
-}
+} */
 
 .App-title {
   font-size: 1.5em;
 }
+/* .playerCtn {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+} */
 
-.App-intro {
-  font-size: large;
+.playerImg {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height: 50%;
+  width: 50%;
 }
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.playerDsp {
+  text-align: center;
+  margin-top: 10px;
+}
+battle_btn_ctn {
+  display: flex;
+  /* flex-direction: column; */
+  justify-content: center;
+}
+.battle-btn {
+  justify-content: center;
+    margin-left: 150px;
+    margin-top: 20px;
+    width: 1000px;
 }
